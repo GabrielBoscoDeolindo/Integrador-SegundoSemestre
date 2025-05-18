@@ -1,9 +1,11 @@
 from rest_framework import generics
 from .models import Sensor, Ambiente, Historico
-from .serializers import SensorSerializer, AmbienteSerializer, HistoricoSerializer
+from .serializers import SensorSerializer, AmbienteSerializer, HistoricoSerializer, RegisterSerializer
 from django.shortcuts import render, redirect
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .permissions import Gestor
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 
 # -------------------------- SENSOR ---------------
 class SensorListCreateView(generics.ListCreateAPIView):
@@ -57,6 +59,11 @@ class HistoricoDetailView(generics.RetrieveUpdateDestroyAPIView):
         if self.request.method in ['PUT', 'PATCH', 'DELETE']:
             return [Gestor()]
         return [IsAuthenticatedOrReadOnly()]
+    
+# --------------------- USUARIO -------------------------
+class RegisterView(generics.CreateAPIView):
+    serializer_class = RegisterSerializer
+    permission_classes = []  
 
 
 
