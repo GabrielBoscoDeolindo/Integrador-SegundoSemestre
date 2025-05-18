@@ -37,8 +37,6 @@ class Ambiente(models.Model):
 class Historico(models.Model):
     sensor = models.ForeignKey(Sensor, on_delete=models.CASCADE, related_name="sensores")
     ambiente = models.ForeignKey(Ambiente, on_delete=models.CASCADE, related_name="ambientes")
-    valor = models.ForeignKey(Sensor, on_delete=models.CASCADE, related_name="valores")
-    timestamp = models.ForeignKey(Sensor, on_delete=models.CASCADE, related_name="timestamps")
 
     class Meta:
         verbose_name_plural = "Historico"

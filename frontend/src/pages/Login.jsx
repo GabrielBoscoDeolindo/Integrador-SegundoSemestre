@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Logo from "../assets/LogoSmartCity.png"
 import { Link } from 'react-router-dom';
 
-function Register() {
+function Login() {
 
   return (
     <>
@@ -16,7 +16,7 @@ function Register() {
 
 <div className='flex flex-col items-center gap-5 mt-10'>
   <div>
-    <p className='text-[#3E4756] text-[36px] font-semibold'>Cadastre-se na SmartCity</p>
+    <p className='text-[#3E4756] text-[36px] font-semibold'>Entre na sua conta</p>
   </div>
   <div>
   <form action="">
@@ -29,10 +29,10 @@ function Register() {
     </form>
     </div>
     <div>
-      <button className='bg-[#3E4756] text-white font-semibold rounded-[50px] w-[300px] py-3'>CADASTRAR</button>
+      <button className='bg-[#3E4756] text-white font-semibold rounded-[50px] w-[300px] py-3'>ENTRAR</button>
     </div>
     <div>
-      <Link to="/login" className="text-[#3E4756] underline text-[20px]">Já possui uma conta? Entre aqui</Link>
+      <Link to="/" className="text-[#3E4756] underline text-[20px]">Não possui uma conta? Se cadastre aqui!</Link>
     </div>
 </div>
 
@@ -45,4 +45,4 @@ function Register() {
   )
 }
 
-export default Register
+export default Login
