@@ -25,20 +25,17 @@ const [username, setUsername] = useState("");
       
       localStorage.setItem("access_token", access);
       localStorage.setItem("refresh_token", refresh);
-
-      
       navigate("/sensores");
 
     } catch (err) {
-      setErrorMsg("Usuário ou senha inválidos.");
-      console.error("Erro no login:", err);
+      window.alert("DADOS INVALIDOS");
     }
   };
 
   return (
     <>
       <div className="flex">
-        <aside className="bg-[#3E4756] w-[574px] h-[1024px]"></aside>
+        <aside className="bg-[#3E4756] w-[1024px] h-[1024px]"></aside>
 
         <main className="w-[100%]">
           <div className="flex justify-end">
@@ -53,13 +50,13 @@ const [username, setUsername] = useState("");
             </div>
             <div>
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                <fieldset className="flex flex-col gap-2">
+                
                   <label className="text-[#3E4756] font-semibold text-[20px]">
-                    Nome:
+                    Nome de usuário:
                   </label>
                   <input
                     type="text"
-                    placeholder="Nome"
+                    placeholder="Nome de usuário"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required
@@ -76,7 +73,7 @@ const [username, setUsername] = useState("");
                     required
                     className="border border-black rounded-[5px] px-4 py-3 bg-[#E8E8E8] w-[491px]"
                   />
-                </fieldset>
+                
               <div className="flex justify-center">
               <button type="submit" className="bg-[#3E4756] text-white font-semibold rounded-[50px] w-[300px] py-3 cursor-pointer hover:bg-[#272d36] ">
                 ENTRAR

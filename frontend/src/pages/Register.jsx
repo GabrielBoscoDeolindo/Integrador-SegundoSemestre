@@ -28,7 +28,7 @@ function Register() {
   return (
     <>
       <div className="flex">
-        <aside className="bg-[#3E4756] w-[574px] h-[1024px]"></aside>
+        <aside className="bg-[#3E4756] w-[1024px] h-[1024px]"></aside>
 
         <main className="w-[100%]">
           <div className="flex justify-end">
@@ -54,11 +54,11 @@ function Register() {
               />
 
               <label className="text-[#3E4756] font-semibold text-[20px]">
-                Senha:
+                Matrícula:
               </label>
               <input
                 type="password"
-                placeholder="Senha"
+                placeholder="Matrícula"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
