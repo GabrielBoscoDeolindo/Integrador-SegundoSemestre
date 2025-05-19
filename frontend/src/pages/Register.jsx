@@ -28,7 +28,7 @@ function Register() {
   return (
     <>
       <div className="flex">
-        <aside className="bg-[#3E4756] w-[1024px] h-[1024px]"></aside>
+        <aside className="bg-charcoal w-[1024px] h-[1024px]"></aside>
 
         <main className="w-[100%]">
           <div className="flex justify-end">
@@ -36,12 +36,12 @@ function Register() {
           </div>
 
           <div className="flex flex-col items-center gap-5 mt-10">
-            <p className="text-[#3E4756] text-[36px] font-semibold">
+            <p className="text-charcoal text-[36px] font-semibold">
               Cadastre-se na SmartCity
             </p>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <label className="text-[#3E4756] font-semibold text-[20px]">
+              <label className="text-charcoal font-semibold text-[20px]">
                 Nome de usuário:
               </label>
               <input
@@ -53,7 +53,7 @@ function Register() {
                 className="border border-black rounded-[5px] px-4 py-3 bg-[#E8E8E8] w-[491px]"
               />
 
-              <label className="text-[#3E4756] font-semibold text-[20px]">
+              <label className="text-charcoal font-semibold text-[20px]">
                 Matrícula:
               </label>
               <input
@@ -68,7 +68,7 @@ function Register() {
               <div className="flex justify-center">
                 <button
                   type="submit"
-                  className="bg-[#3E4756] text-white font-semibold rounded-[50px] w-[300px] py-3 cursor-pointer hover:bg-[#272d36]"
+                  className="bg-charcoal text-white font-semibold rounded-[50px] w-[300px] py-3 cursor-pointer hover:bg-[#272d36]"
                 >
                   CADASTRAR
                 </button>
@@ -76,7 +76,7 @@ function Register() {
             </form>
 
             <div>
-              <Link to="/login" className="text-[#3E4756] underline text-[20px]">
+              <Link to="/login" className="text-charcoal underline text-[20px]">
                 Já possui uma conta? Entre aqui
               </Link>
             </div>

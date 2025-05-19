@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
-
-/* html{
-    padding-left: 240px;
-    padding-right: 240px;
-} */
+@theme {
+    --color-charcoal: #3E4756;
+    --color-sensor: #FFFAFA;
+}
