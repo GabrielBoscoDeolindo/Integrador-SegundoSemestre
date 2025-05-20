@@ -6,4 +6,5 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('sensores/', SensorListCreateView.as_view(), name='sensores'),
+    path('sensores/<int:pk>/', SensorDetailView.as_view(), name='sensor-detail'),
 ]
