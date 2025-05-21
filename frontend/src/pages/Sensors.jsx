@@ -45,13 +45,13 @@ function Sensors() {
     <div className="flex">
       <Aside />
 
-      <div className="flex flex-col p-6  gap-4">
+      <div className="flex flex-col p-6 pt-16  gap-4">
         <p className="text-charcoal text-[36px] font-semibold">Meus sensores:</p>
 
         {sensores.map((sensor) => (
-          <div key={sensor.id} className="flex justify-between items-start w-[442px] h-auto bg-sensor border-[2px] border-charcoal pl-1 pr-2 py-2">
+          <div key={sensor.id} className="flex justify-between items-start w-[350px] h-auto bg-sensor border-[2px] border-charcoal pl-1 pr-2 py-2">
             <div>
-              <p className='text-[20px] font-bold capitalize'>{sensor.sensor}</p>
+              <p className='text-[20px] font-bold capitalize'>{sensor.id} - {sensor.sensor}</p>
               <p className={`text-[16px] font-semibold ${sensor.status ? "text-[#0033FF]" : "text-[#FF0000]"}`}> {sensor.status ? "ATIVO" : "INATIVO"}</p>
               <p className='text-[12px] font-bold'>Mac address: {sensor.mac_address}</p>
               <p className='text-[12px] font-bold'>Valor: {sensor.valor}{sensor.unidade_med}</p>
@@ -65,7 +65,7 @@ function Sensors() {
           </div>
         ))}
       </div>
-        <div className='flex flex-col items-center bg-sensor border-[9px] border-charcoal w-[442px] h-[487px] mt-23.5'>
+        {/* <div className='flex flex-col items-center bg-sensor border-[9px] border-charcoal w-[442px] h-[487px] mt-23.5'>
           <p className='text-charcoal text-[36px] font-semibold'>Novo sensor:</p>
           <form action="" className='flex flex-wrap justify-center gap-5'>
             <div className='flex flex-col'>
@@ -97,7 +97,7 @@ function Sensors() {
           Salvar Sensor
           </button>
           </form>
-        </div>
+        </div> */}
     </div>
   );
 }

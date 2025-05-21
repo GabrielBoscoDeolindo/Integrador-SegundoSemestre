@@ -7,12 +7,12 @@ import { GrNotes } from "react-icons/gr";
 function Aside() {
   return (
     <>
-      <aside className="bg-charcoal w-[284px] h-[1024px] flex flex-col items-center gap-5 pt-20">
+      <aside className="bg-charcoal w-[284px] min-h-screen flex flex-col items-center gap-5 pt-20">
         <div className="flex flex-col items-center">
           <div className="w-[190px] h-[204px] border-[4px] rounded-[5px] border-white">
-            <img className="object-cover" src={Me} alt="me" />
+            <img className="w-full h-full object-cover" src={Me} alt="me" />
           </div>
-          <p className="text-white text-[20px] font-semibold">
+          <p className="text-white text-[20px]">
             Gabriel Deolindo
           </p>
         </div>
