@@ -18,15 +18,15 @@ function Aside() {
         </div>
 
         <div className="flex flex-col gap-3">
-          <button className="text-white border-[2px] border-white rounded-[5px] w-[248px] h-[56px] cursor-pointer text-[24px] hover:bg-[#36578E] flex items-center gap-2 pl-2">
+          <button className="text-white border-[2px] border-white rounded-[12px] w-[248px] h-[56px] cursor-pointer text-[24px] hover:bg-[#36578E] flex items-center gap-2 pl-2">
             <MdOutlineSensors />
             <p className="pb-1">Sensores</p>
           </button>
-          <button className="text-white border-[2px] border-white rounded-[5px] w-[248px] h-[56px] cursor-pointer text-[24px] hover:bg-[#36578E] flex items-center gap-2 pl-2">
+          <button className="text-white border-[2px] border-white rounded-[12px] w-[248px] h-[56px] cursor-pointer text-[24px] hover:bg-[#36578E] flex items-center gap-2 pl-2">
             <BsFillHouseFill />
             <p className="pb-1">Ambientes</p>
           </button>
-          <button className="text-white border-[2px] border-white rounded-[5px] w-[248px] h-[56px] cursor-pointer text-[24px] hover:bg-[#36578E] flex items-center gap-2 pl-2">
+          <button className="text-white border-[2px] border-white rounded-[12px] w-[248px] h-[56px] cursor-pointer text-[24px] hover:bg-[#36578E] flex items-center gap-2 pl-2">
             <GrNotes />
             <p className="pb-1">Histórico</p>
           </button>
