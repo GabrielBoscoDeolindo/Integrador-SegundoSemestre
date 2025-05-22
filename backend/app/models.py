@@ -13,11 +13,9 @@ class Sensor(models.Model):
     sensor = models.CharField(max_length=50, choices=SENSOR_CHOICES)  
     mac_address = models.CharField(max_length=20)
     unidade_med = models.CharField(max_length=20)
-    valor = models.FloatField()
     latitude = models.FloatField()
     longitude = models.FloatField()
     status = models.BooleanField()
-    timestamp = models.DateTimeField()
 
     class Meta:
         verbose_name_plural = "Sensores"
@@ -37,6 +35,8 @@ class Ambiente(models.Model):
 class Historico(models.Model):
     sensor = models.ForeignKey(Sensor, on_delete=models.CASCADE, related_name="sensores")
     ambiente = models.ForeignKey(Ambiente, on_delete=models.CASCADE, related_name="ambientes")
+    timestamp = models.DateTimeField()
+    valor = models.FloatField()
 
     class Meta:
         verbose_name_plural = "Historico"

@@ -7,6 +7,8 @@ from .permissions import Gestor
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 
+
+
 # -------------------------- SENSOR ---------------
 class SensorListCreateView(generics.ListCreateAPIView):
     queryset = Sensor.objects.all()
