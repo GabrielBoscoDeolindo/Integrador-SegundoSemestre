@@ -4,6 +4,7 @@ import axios from "axios";
 import Aside from "../components/Aside";
 import DeleteButton from "../components/DeleteButton";
 import UpdateButton from "../components/UpdateButton";
+import EditFormsButtons from "../components/EditFormsButtons";
 
 function Sensors() {
   const [sensores, setSensores] = useState([]);
@@ -106,21 +107,8 @@ function Sensors() {
                   <option value={false}>INATIVO</option>
                 </select>
 
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleSaveEdit(sensor.id)}
-                    className="bg-green-500 text-white border border-black w-[70px] h-[25px] text-sm hover:bg-green-700"
-                  >
-                    SALVAR
-                  </button>
-                  <button
-                    onClick={() => setEditandoId(null)}
-                    className="bg-gray-500 text-white border border-black w-[70px] h-[25px] text-sm hover:bg-gray-700"
-                  >
-                    CANCELAR
-                  </button>
-                </div>
-              </>
+              <EditFormsButtons sensorId={sensor.id} onSave={handleSaveEdit} onCancel={() => setEditandoId(null)}/>
+            </>
             ) : (
               <>
                 <div>
