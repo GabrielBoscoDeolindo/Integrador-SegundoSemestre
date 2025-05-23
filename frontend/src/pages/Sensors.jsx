@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import Aside from "../components/Aside";
 import DeleteButton from "../components/DeleteButton";
@@ -9,10 +10,13 @@ function Sensors() {
   const [editandoId, setEditandoId] = useState(null);
   const [formEdicao, setFormEdicao] = useState({});
 
+  const location = useLocation();
+  const query = location.search;  
+
   const fetchSensores = async () => {
     try {
       const token = localStorage.getItem("access_token");
-      const { data } = await axios.get("http://localhost:8000/sensores/", {
+      const { data } = await axios.get(`http://localhost:8000/sensores/${query}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSensores(data);
@@ -21,7 +25,9 @@ function Sensors() {
     }
   };
 
-  useEffect(() => { fetchSensores(); }, []);
+  useEffect(() => {
+    fetchSensores();
+  }, [location.search]);  
 
   const handleDelete = async (id) => {
     if (!id) return;
@@ -45,7 +51,6 @@ function Sensors() {
       status: sensor.status,
       latitude: sensor.latitude,
       longitude: sensor.longitude,
-      valor: sensor.valor,
       unidade_med: sensor.unidade_med,
     });
   };
@@ -120,9 +125,11 @@ function Sensors() {
               <>
                 <div>
                   <p className="text-[20px] font-bold capitalize">{sensor.id} - {sensor.sensor}</p>
-                  <p className={`text-[16px] font-semibold ${sensor.status ? "text-[#0033FF]" : "text-[#FF0000]"}`}>{sensor.status ? "ATIVO" : "INATIVO"}</p>
+                  <p className={`text-[16px] font-semibold ${sensor.status ? "text-[#0033FF]" : "text-[#FF0000]"}`}>
+                    {sensor.status ? "ATIVO" : "INATIVO"}
+                  </p>
                   <p className="text-[12px] font-bold">Mac address: {sensor.mac_address}</p>
-                  <p className="text-[12px] font-bold">Valor: {sensor.valor}{sensor.unidade_med}</p>
+                  <p className="text-[12px] font-bold">Unidade de Medida: {sensor.unidade_med}</p>
                   <p className="text-[12px] font-bold">Coordenadas: {sensor.latitude}, {sensor.longitude}</p>
                 </div>
                 <div className="flex gap-2">

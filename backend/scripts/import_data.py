@@ -29,26 +29,26 @@ def importar_sensores():
             sensor=row["sensor"],
             mac_address=row["mac_address"],
             unidade_med=row["unidade_medida"],
-            valor=row["valor"],
             latitude=row["latitude"],
             longitude=row["longitude"],
-            status= True if row["status"] == "ativo" else False,
-            timestamp=row["timestamp"],
+            status=True if row["status"] == "Ativo" else False,
         )
 
 def importar_historico():
-    df = pd.read_excel("data/historico.xlsx")  
+    df = pd.read_excel("data/historico.xlsx")
     for _, row in df.iterrows():
-        
-        sensor_instance = Sensor.objects.get(id=row["sensor_id"])  
-        ambiente_instance = Ambiente.objects.get(sig=row["ambiente_sig"])  
+
+        sensor_instance = Sensor.objects.get(id=row["sensor"])  
+        sig = int(row["ambiente"].replace(".", ""))
+        ambiente_instance = Ambiente.objects.get(sig=sig) 
 
         Historico.objects.create(
-            sensor=sensor_instance,
-            ambiente=ambiente_instance,
+            sensor=sensor_instance,  
+            ambiente=ambiente_instance,  
             timestamp=row["timestamp"],
             valor=row["valor"]
         )
+
 
 if __name__ == "__main__":
     importar_historico()

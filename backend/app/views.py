@@ -5,6 +5,8 @@ from django.shortcuts import render, redirect
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .permissions import Gestor
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import SensorFilter, HistoricoFilter, AmbienteFilter
 
 
 
@@ -13,6 +15,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 class SensorListCreateView(generics.ListCreateAPIView):
     queryset = Sensor.objects.all()
     serializer_class = SensorSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = SensorFilter
     def get_permissions(self):
         if self.request.method == 'POST':
             return [Gestor()]
@@ -31,6 +35,8 @@ class SensorDetailView(generics.RetrieveUpdateDestroyAPIView):
 class AmbienteListCreateView(generics.ListCreateAPIView):
     queryset = Ambiente.objects.all()
     serializer_class = AmbienteSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = AmbienteFilter
     def get_permissions(self):
         if self.request.method == 'POST':
             return [Gestor()]
@@ -49,6 +55,8 @@ class AmbienteDetailView(generics.RetrieveUpdateDestroyAPIView):
 class HistoricoListCreateView(generics.ListCreateAPIView):
     queryset = Historico.objects.all()
     serializer_class = HistoricoSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = HistoricoFilter
     def get_permissions(self):
         if self.request.method == 'POST':
             return [Gestor()]

@@ -1,24 +1,17 @@
-# import django_filters
-# from .models import Sensor, Historico
+import django_filters
+from .models import Sensor, Historico, Ambiente
 
-# class SensorFilter(django_filters.FilterSet):
-#     timestamp = django_filters.DateFilter(field_name='timestamp', lookup_expr='date')
+class SensorFilter(django_filters.FilterSet):
+    class Meta:
+        model = Sensor
+        fields = ['sensor', 'status', 'mac_address', 'unidade_med']
 
-#     class Meta:
-#         model = Sensor
-#         fields = {
-#             'id': ['exact'],
-#             'sensor': ['exact'],
-#             'timestamp': ['exact'],
-#         }
+class AmbienteFilter(django_filters.FilterSet):
+    class Meta:
+        model = Ambiente
+        fields = ['sig', 'descricao', 'ni', 'responsavel']
 
-# class HistoricoFilter(django_filters.FilterSet):
-#     class Meta:
-#         model = Historico
-#         fields = {
-#             'id': ['exact'],
-#             'sensor__id': ['exact'],
-#             'sensor__sensor': ['exact'],
-#             'sensor__timestamp': ['date'],
-#             'ambiente__sig': ['exact'],
-#         }
+class HistoricoFilter(django_filters.FilterSet):
+    class Meta:
+        model = Historico
+        fields = ['sensor', 'ambiente', 'timestamp', 'valor']
