@@ -139,8 +139,8 @@ class ExportarHistorico(APIView):
         for historico in queryset:
             ws.append([
                 historico.id,
-                historico.sensor.sensor,  # nome do sensor
-                historico.ambiente.sig,   # sig do ambiente
+                historico.sensor.sensor,  
+                historico.ambiente.sig,   
                 historico.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
                 historico.valor
             ])

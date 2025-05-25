@@ -4,7 +4,8 @@ import Login from './pages/Login';
 import Sensors from './pages/Sensors';
 import Enviroments from './pages/Enviroments';
 import History from './pages/History';
-import Data from './pages/Data';
+import Map from './pages/Map';
+
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
       <Route path="/ambientes" element={<Enviroments />} />
       <Route path="/historico" element={<History />} />
       <Route path="/historico" element={<History />} />
-      <Route path="/mapa" element={<Data />} />
+      <Route path="/mapa" element={<Map />} />
+      
     </Routes>
   );
 }

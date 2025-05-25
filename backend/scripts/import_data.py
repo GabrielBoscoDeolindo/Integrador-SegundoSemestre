@@ -37,14 +37,18 @@ def importar_sensores():
 def importar_historico():
     df = pd.read_excel("data/historico.xlsx")
     for _, row in df.iterrows():
+        
+            sensor = Sensor.objects.get(id=row["sensor"])
+            ambiente = Ambiente.objects.get(id=row["ambiente"])
 
-        Historico.objects.create(
-            sensor= row["sensor"],  
-            ambiente= row["ambiente"],  
-            timestamp=row["timestamp"],
-            valor=row["valor"]
-        )
+            Historico.objects.create(
+                sensor=sensor,
+                ambiente=ambiente,
+                timestamp=pd.to_datetime(row["timestamp"]),
+                valor=row["valor"]
+            )
+
 
 
 if __name__ == "__main__":
-    importar_sensores()
+    importar_historico()

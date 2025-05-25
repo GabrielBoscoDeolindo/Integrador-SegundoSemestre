@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Aside from "../components/Aside";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import Leaf from "leaflet";
 
@@ -23,7 +23,7 @@ function ChangeMapView({ coords }) {
   return null;
 }
 
-function Data() {
+function Map() {
   const [sensorId, setSensorId] = useState("");
   const [sensor, setSensor] = useState(null);
 
@@ -61,29 +61,23 @@ function Data() {
         </div>
 
         {sensor && (
-          <>
-            <div className="flex flex-col gap-2 w-[350px] bg-sensor border-[2px] border-charcoal p-2">
+          <>  
+          <div className="flex gap-80">
+
+            <div className="flex flex-col gap-2 w-[350px] h-[120px] bg-sensor border-[2px] border-charcoal p-2">
               <p className="text-[20px] font-bold capitalize">{sensor.id} - {sensor.sensor}</p>
               <p className="text-[12px] font-bold">Mac address: {sensor.mac_address}</p>
               <p className="text-[18px] font-bold">Coordenadas: {sensor.latitude}, {sensor.longitude}</p>
             </div>
 
-            <MapContainer
-              center={[sensor.latitude, sensor.longitude]}
-              zoom={15}
-              style={{ height: "400px", width: "100%", marginTop: "1rem", borderRadius: "10px", overflow: "hidden" }}
-            >
-              <ChangeMapView coords={[sensor.latitude, sensor.longitude]} />
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution="&copy; OpenStreetMap contributors"
-              />
-              <Marker position={[sensor.latitude, sensor.longitude]}>
-                <Popup>
-                  {sensor.sensor} <br /> {sensor.mac_address}
-                </Popup>
-              </Marker>
-            </MapContainer>
+            <div className="border-4"> 
+              <MapContainer center={[sensor.latitude, sensor.longitude]} zoom={15} style={{ width: "700px", height: "700px", overflow: "hidden" }}>
+                <ChangeMapView coords={[sensor.latitude, sensor.longitude]} />
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+                <Marker position={[sensor.latitude, sensor.longitude]}></Marker>
+              </MapContainer>
+            </div>
+          </div>
           </>
         )}
       </div>
@@ -91,4 +85,4 @@ function Data() {
   );
 }
 
-export default Data;
+export default Map;
