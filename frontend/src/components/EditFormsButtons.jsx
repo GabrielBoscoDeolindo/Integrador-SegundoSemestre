@@ -5,14 +5,12 @@ function EditFormsButtons({ sensorId, onSave, onCancel }) {
     <div className="flex gap-2">
       <button
         onClick={() => onSave(sensorId)}
-        className="bg-green-500 text-white border border-black w-[70px] h-[25px] text-sm hover:bg-green-700"
-      >
+        className="bg-blue-600 text-white px-[15px] py-[5px] rounded-[5px] font-semibold hover:bg-blue-700">
         SALVAR
       </button>
       <button
         onClick={onCancel}
-        className="bg-blue-500 text-white border border-black w-[70px] h-[25px] text-sm hover:bg-gray-700"
-      >
+        className="bg-[#ee2525]  text-white px-[15px] py-[5px] rounded-[5px] font-semibold hover:bg-[#b60000]">
         CANCELAR
       </button>
     </div>

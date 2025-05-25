@@ -43,7 +43,7 @@ function Aside() {
               <p className="pb-1">Histórico</p>
             </button>
           </Link>
-          <Link to="/historico">
+          <Link to="/mapa">
             <button className="text-white border-[2px] border-white rounded-[12px] w-[248px] h-[56px] cursor-pointer text-[24px] hover:bg-[#36578E] flex items-center gap-2 pl-2">
               <TbMapSearch />
               <p className="pb-1">Mapas</p>

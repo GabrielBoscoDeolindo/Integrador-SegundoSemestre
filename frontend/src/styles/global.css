@@ -4,5 +4,6 @@
 
 @theme {
     --color-charcoal: #3E4756;
-    --color-sensor: #FFFAFA;
+    --color-charcoalHover: #242933;
+    --color-sensor: #f7faff;
 }

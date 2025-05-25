@@ -1,6 +1,6 @@
 const UpdateButton = ({ onEdit }) => {
   return (
-    <button onClick={onEdit} className="bg-blue-500 text-white border border-black w-[70px] h-[25px] text-sm hover:bg-blue-700">
+    <button onClick={onEdit} className="bg-charcoal  text-white px-[15px] py-[5px] rounded-[5px] font-semibold hover:bg-charcoalHover">
       EDITAR
     </button>
   );

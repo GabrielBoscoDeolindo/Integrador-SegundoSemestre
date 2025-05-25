@@ -14,4 +14,8 @@ urlpatterns = [
     
     path('historico/', HistoricoListCreateView.as_view(), name='historico'),
     path('historico/<int:pk>/', HistoricoDetailView.as_view(), name='historico-detail'),
+
+    path('exportar-sensor', ExportarSensor.as_view(), name='exportar-excel-sensores'),
+    path('exportar-ambiente', ExportarAmbiente.as_view(), name='exportar-excel-sensores-ambiente'),
+    path('exportar-historico', ExportarHistorico.as_view(), name='exportar-excel-sensores-historico'),
 ]

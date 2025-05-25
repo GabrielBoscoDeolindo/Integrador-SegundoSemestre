@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import Aside from "../components/Aside";
 import DeleteButton from "../components/DeleteButton";
@@ -10,10 +11,13 @@ function Enviroments() {
   const [editandoId, setEditandoId] = useState(null);
   const [formEdicao, setFormEdicao] = useState({});
 
+  const location = useLocation();
+  const query = location.search;  
+
   const fetchAmbientes = async () => {
     try {
       const token = localStorage.getItem("access_token");
-      const { data } = await axios.get("http://localhost:8000/ambientes/", {
+      const { data } = await axios.get(`http://localhost:8000/ambientes/${query}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAmbientes(data);
@@ -22,7 +26,9 @@ function Enviroments() {
     }
   };
 
-  useEffect(() => { fetchAmbientes(); }, []);
+  useEffect(() => { 
+    fetchAmbientes(); 
+  }, [location.search]);
 
   const handleDelete = async (id) => {
     if (!id) return;
@@ -77,7 +83,7 @@ function Enviroments() {
           <div key={ambiente.id} className="flex flex-col gap-2 w-[600px] bg-sensor border-[2px] border-charcoal p-2">
             {editandoId === ambiente.id ? (
               <>
-                {["sig","descricao","ni","responsavel"].map((field) => (
+                {["sig", "descricao", "ni", "responsavel"].map((field) => (
                   <input
                     key={field}
                     name={field}
@@ -88,13 +94,19 @@ function Enviroments() {
                   />
                 ))}
 
-                <EditFormsButtons ambienteId={ambiente.id} onSave={handleSaveEdit} onCancel={() => setEditandoId(null)}/>
+                <EditFormsButtons 
+                  sensorId={ambiente.id} 
+                  onSave={handleSaveEdit} 
+                  onCancel={() => setEditandoId(null)} 
+                />
               </>
             ) : (
               <>
                 <div>
-                  <p className="text-[20px] font-bold capitalize">{ambiente.sig} - {ambiente.descricao}</p><br />
-                  <p className="text-[20px] font-bold capitalize">Responsável: {ambiente.responsavel} - {ambiente.ni}</p>
+                  <p className="text-[20px] font-bold capitalize">{ambiente.sig} - {ambiente.descricao}</p>
+                  <p className="text-[20px] text-charcoal font-bold capitalize">
+                    Responsável: {ambiente.responsavel} - {ambiente.ni}
+                  </p>
                 </div>
                 <div className="flex gap-2">
                   <UpdateButton onEdit={() => handleEditClick(ambiente)} />

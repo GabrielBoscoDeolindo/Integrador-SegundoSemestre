@@ -15,7 +15,7 @@ function App() {
       <Route path="/ambientes" element={<Enviroments />} />
       <Route path="/historico" element={<History />} />
       <Route path="/historico" element={<History />} />
-      {/* <Route path="/mapa" element={<Data />} /> */}
+      <Route path="/mapa" element={<Data />} />
     </Routes>
   );
 }
