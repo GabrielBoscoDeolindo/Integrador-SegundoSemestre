@@ -55,7 +55,7 @@ function Map() {
             onChange={(e) => setSensorId(e.target.value)}
             className="border p-2"
           />
-          <button onClick={handleSearch} className="bg-blue-500 text-white rounded-[5px] p-2 hover:bg-blue-700">
+          <button onClick={handleSearch} className="bg-blue-600 text-white font-semibold rounded-[5px] p-2 hover:bg-blue-700">
             BUSCAR
           </button>
         </div>
