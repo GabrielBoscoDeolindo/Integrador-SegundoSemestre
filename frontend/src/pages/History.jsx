@@ -81,7 +81,7 @@ function History() {
         ))}
       </div>
 
-      <div className="border mt-50 w-[1200px] h-[500px] bg-white rounded">
+      <div className="border mt-[205px] w-[1200px] h-[500px] bg-white rounded">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />

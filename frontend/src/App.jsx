@@ -15,9 +15,7 @@ function App() {
       <Route path="/sensores" element={<Sensors />} />
       <Route path="/ambientes" element={<Enviroments />} />
       <Route path="/historico" element={<History />} />
-      <Route path="/historico" element={<History />} />
       <Route path="/mapa" element={<Map />} />
-      
     </Routes>
   );
 }

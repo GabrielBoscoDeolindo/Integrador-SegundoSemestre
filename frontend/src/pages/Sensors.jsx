@@ -15,15 +15,11 @@ function Sensors() {
   const query = location.search;  
 
   const fetchSensores = async () => {
-    try {
       const token = localStorage.getItem("access_token");
       const { data } = await axios.get(`http://localhost:8000/sensores/${query}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSensores(data);
-    } catch (err) {
-      console.error("Erro ao buscar sensores:", err);
-    }
   };
 
   useEffect(() => {
@@ -39,7 +35,6 @@ function Sensors() {
       });
       fetchSensores();
     } catch (err) {
-      console.error("Erro ao deletar sensor:", err);
       alert("Erro ao deletar sensor. Verifique permissões.");
     }
   };

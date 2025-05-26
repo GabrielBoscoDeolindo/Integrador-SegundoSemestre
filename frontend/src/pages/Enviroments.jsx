@@ -15,15 +15,11 @@ function Enviroments() {
   const query = location.search;  
 
   const fetchAmbientes = async () => {
-    try {
       const token = localStorage.getItem("access_token");
       const { data } = await axios.get(`http://localhost:8000/ambientes/${query}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAmbientes(data);
-    } catch (err) {
-      console.error("Erro ao buscar ambientes:", err);
-    }
   };
 
   useEffect(() => { 
