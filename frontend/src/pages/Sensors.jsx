@@ -81,23 +81,18 @@ function Sensors() {
           <div key={sensor.id} className="flex flex-col gap-2 w-[350px] bg-sensor border-[2px] border-charcoal p-2">
             {editandoId === sensor.id ? (
               <>
-                {["sensor", "mac_address", "latitude", "longitude", "valor", "unidade_med"].map((field) => (
+                {["sensor", "mac_address", "latitude", "longitude", "unidade_med"].map((field) => (
                   <input
                     key={field}
                     name={field}
                     value={formEdicao[field]}
                     onChange={handleEditChange}
                     className="border p-1"
-                    placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                    placeholder={field}
                   />
                 ))}
 
-                <select
-                  name="status"
-                  value={formEdicao.status}
-                  onChange={handleEditChange}
-                  className="border p-1"
-                >
+                <select name="status" value={formEdicao.status} onChange={handleEditChange} className="border p-1">
                   <option value={true}>ATIVO</option>
                   <option value={false}>INATIVO</option>
                 </select>

@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import *
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
@@ -19,3 +19,5 @@ urlpatterns = [
     path('exportar-ambiente', ExportarAmbiente.as_view(), name='exportar-excel-sensores-ambiente'),
     path('exportar-historico', ExportarHistorico.as_view(), name='exportar-excel-sensores-historico'),
 ]
+
+

@@ -6,7 +6,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 function History() {
   const [historico, setHistorico] = useState([]);
-  const [ordenarPor, setOrdenarPor] = useState("timestamp"); // Estado para controle da ordenação
+  const [ordenarPor, setOrdenarPor] = useState("timestamp"); 
 
   const fetchHistorico = async () => {
     const token = localStorage.getItem("access_token");
