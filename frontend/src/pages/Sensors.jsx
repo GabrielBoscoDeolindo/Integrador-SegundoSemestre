@@ -74,11 +74,11 @@ function Sensors() {
     <div className="flex">
       <Aside />
 
-      <div className="flex flex-col p-6 pt-16 gap-4">
+      <main className="flex flex-col p-6 pt-16 gap-4">
         <p className="text-charcoal text-[36px] font-semibold">Meus sensores:</p>
 
         {sensores.map((sensor) => (
-          <div key={sensor.id} className="flex flex-col gap-2 w-[350px] bg-sensor border-[2px] border-charcoal p-2">
+          <div key={sensor.id} className="flex flex-col gap-2 w-[350px] bg-sensor border-[2px] border-charcoal p-2 rounded-[5px]">
             {editandoId === sensor.id ? (
               <>
                 {["sensor", "mac_address", "latitude", "longitude", "unidade_med"].map((field) => (
@@ -101,24 +101,24 @@ function Sensors() {
             </>
             ) : (
               <>
-                <div>
+                <section>
                   <p className="text-[20px] font-bold capitalize">{sensor.id} - {sensor.sensor}</p>
-                  <p className={`text-[16px] font-semibold ${sensor.status ? "text-[#0033FF]" : "text-[#FF0000]"}`}>
+                  <p className={`text-[16px] font-semibold ${sensor.status ? "text-[#486bf5]" : "text-[#ff4040]"}`}>
                     {sensor.status ? "ATIVO" : "INATIVO"}
                   </p>
                   <p className="text-[12px] font-bold">Mac address: {sensor.mac_address}</p>
                   <p className="text-[12px] font-bold">Unidade de Medida: {sensor.unidade_med}</p>
                   <p className="text-[12px] font-bold">Coordenadas: {sensor.latitude}, {sensor.longitude}</p>
-                </div>
-                <div className="flex gap-2">
+                </section>
+                <section className="flex gap-2">
                   <UpdateButton onEdit={() => handleEditClick(sensor)} />
                   <DeleteButton onDelete={handleDelete} id={sensor.id} />
-                </div>
+                </section>
               </>
             )}
           </div>
         ))}
-      </div>
+      </main>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Login() {
-const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
@@ -22,76 +22,71 @@ const [username, setUsername] = useState("");
 
       const { access, refresh } = response.data;
 
-      
       localStorage.setItem("access_token", access);
       localStorage.setItem("refresh_token", refresh);
       navigate("/sensores");
-
     } catch (err) {
       window.alert("DADOS INVALIDOS");
     }
   };
 
   return (
-    <>
-      <div className="flex">
-        <aside className="bg-charcoal w-[1024px] h-[1024px]"></aside>
+    <div className="flex">
+      <aside className="bg-charcoal w-[1024px] h-[1024px]"></aside>
 
-        <main className="w-[100%]">
-          <div className="flex justify-end">
-            <img src={Logo} alt="Logo" />
-          </div>
+      <main className="w-full">
+        <header className="flex justify-end">
+          <img src={Logo} alt="Logo" />
+        </header>
 
-          <div className="flex flex-col items-center gap-5 mt-10">
-            <div>
-              <p className="text-charcoal text-[36px] font-semibold">
-                Entre na sua conta
-              </p>
-            </div>
-            <div>
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                
-                  <label className="text-charcoal font-semibold text-[20px]">
-                    Nome de usuário:
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Nome de usuário"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                    className="border border-black rounded-[5px] px-4 py-3 bg-[#E8E8E8] w-[491px]"
-                  />
-                  <label className="text-charcoal font-semibold text-[20px]">
-                    Matrícula:
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Matrícula"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="border border-black rounded-[5px] px-4 py-3 bg-[#E8E8E8] w-[491px]"
-                  />
-                
-              <div className="flex justify-center">
-              <button type="submit" className="bg-charcoal text-white font-semibold rounded-[50px] w-[300px] py-3 cursor-pointer hover:bg-[#272d36] ">
+        <section className="flex flex-col items-center gap-5 mt-10">
+          <h1 className="text-charcoal text-[36px] font-semibold">
+            Entre na sua conta
+          </h1>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <label className="text-charcoal font-semibold text-[20px]">
+              Nome de usuário:
+            </label>
+            <input
+              type="text"
+              placeholder="Nome de usuário"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              className="border border-black rounded-[5px] px-4 py-3 bg-[#E8E8E8] w-[491px]"
+            />
+
+            <label className="text-charcoal font-semibold text-[20px]">
+              Matrícula:
+            </label>
+            <input
+              type="text"
+              placeholder="Matrícula"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="border border-black rounded-[5px] px-4 py-3 bg-[#E8E8E8] w-[491px]"
+            />
+
+            <div className="flex justify-center">
+              <button
+                type="submit"
+                className="bg-charcoal text-white font-semibold rounded-[50px] w-[300px] py-3 cursor-pointer hover:bg-[#272d36]"
+              >
                 ENTRAR
               </button>
-              </div>
-              </form>
             </div>
-            <div>
-            </div>
-            <div>
-              <Link to="/" className="text-charcoal underline text-[20px]">
-                Não possui uma conta? Se cadastre aqui!
-              </Link>
-            </div>
-          </div>
-        </main>
-      </div>
-    </>
+          </form>
+
+          <footer>
+            <Link to="/" className="text-charcoal underline text-[20px]">
+              Não possui uma conta? Se cadastre aqui!
+            </Link>
+          </footer>
+        </section>
+      </main>
+    </div>
   );
 }
 

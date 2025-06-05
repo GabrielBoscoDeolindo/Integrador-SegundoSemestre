@@ -16,74 +16,72 @@ function Register() {
         username,
         password,
       });
-        const proceed = window.confirm("Cadastro realizado com sucesso! Deseja ir para a tela de login?");
-        if (proceed) {
+      const proceed = window.confirm("Cadastro realizado com sucesso! Deseja ir para a tela de login?");
+      if (proceed) {
         navigate("/login");
-        }
+      }
     } catch (err) {
       console.error("Erro ao registrar:", err);
     }
   };
 
   return (
-    <>
-      <div className="flex">
-        <aside className="bg-charcoal w-[1024px] h-[1024px]"></aside>
+    <div className="flex">
+      <aside className="bg-charcoal w-[1024px] h-[1024px]"></aside>
 
-        <main className="w-[100%]">
-          <div className="flex justify-end">
-            <img src={Logo} alt="Logo" />
-          </div>
+      <main className="w-full">
+        <header className="flex justify-end">
+          <img src={Logo} alt="Logo" />
+        </header>
 
-          <div className="flex flex-col items-center gap-5 mt-10">
-            <p className="text-charcoal text-[36px] font-semibold">
-              Cadastre-se na SmartCity
-            </p>
+        <section className="flex flex-col items-center gap-5 mt-10">
+          <h1 className="text-charcoal text-[36px] font-semibold">
+            Cadastre-se na SmartCity
+          </h1>
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <label className="text-charcoal font-semibold text-[20px]">
-                Nome de usuário:
-              </label>
-              <input
-                type="text"
-                placeholder="Nome de usuário"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                className="border border-black rounded-[5px] px-4 py-3 bg-[#E8E8E8] w-[491px]"
-              />
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <label className="text-charcoal font-semibold text-[20px]">
+              Nome de usuário:
+            </label>
+            <input
+              type="text"
+              placeholder="Nome de usuário"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              className="border border-black rounded-[5px] px-4 py-3 bg-[#E8E8E8] w-[491px]"
+            />
 
-              <label className="text-charcoal font-semibold text-[20px]">
-                Matrícula:
-              </label>
-              <input
-                type="password"
-                placeholder="Matrícula"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="border border-black rounded-[5px] px-4 py-3 bg-[#E8E8E8] w-[491px]"
-              />
+            <label className="text-charcoal font-semibold text-[20px]">
+              Matrícula:
+            </label>
+            <input
+              type="password"
+              placeholder="Matrícula"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="border border-black rounded-[5px] px-4 py-3 bg-[#E8E8E8] w-[491px]"
+            />
 
-              <div className="flex justify-center">
-                <button
-                  type="submit"
-                  className="bg-charcoal text-white font-semibold rounded-[50px] w-[300px] py-3 cursor-pointer hover:bg-[#272d36]"
-                >
-                  CADASTRAR
-                </button>
-              </div>
-            </form>
-
-            <div>
-              <Link to="/login" className="text-charcoal underline text-[20px]">
-                Já possui uma conta? Entre aqui
-              </Link>
+            <div className="flex justify-center">
+              <button
+                type="submit"
+                className="bg-charcoal text-white font-semibold rounded-[50px] w-[300px] py-3 cursor-pointer hover:bg-[#272d36]"
+              >
+                CADASTRAR
+              </button>
             </div>
-          </div>
-        </main>
-      </div>
-    </>
+          </form>
+
+          <footer>
+            <Link to="/login" className="text-charcoal underline text-[20px]">
+              Já possui uma conta? Entre aqui
+            </Link>
+          </footer>
+        </section>
+      </main>
+    </div>
   );
 }
 

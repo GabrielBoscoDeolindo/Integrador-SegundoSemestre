@@ -64,7 +64,7 @@ function History() {
         </button>
 
         {historico.map((item) => (
-          <div key={item.id} className="flex flex-col gap-2 w-[300px] bg-sensor border-[2px] border-charcoal p-2">
+          <div key={item.id} className="flex flex-col gap-2 w-[300px] bg-sensor border-[2px] border-charcoal p-2 rounded-[5px]">
             <div>
               <p className="text-[18px] font-bold">
                 Valor: {item.valor}

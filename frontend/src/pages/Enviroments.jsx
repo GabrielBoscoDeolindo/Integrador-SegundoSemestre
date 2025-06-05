@@ -69,16 +69,19 @@ function Enviroments() {
   };
 
   return (
-    <div className="flex">
+    <main className="flex">
       <Aside />
 
-      <div className="flex flex-col p-6 pt-16 gap-4">
-        <p className="text-charcoal text-[36px] font-semibold">Meus ambientes:</p>
+      <section className="flex flex-col p-6 pt-16 gap-4">
+        <h1 className="text-charcoal text-[36px] font-semibold">Meus ambientes:</h1>
 
         {ambientes.map((ambiente) => (
-          <div key={ambiente.id} className="flex flex-col gap-2 w-[600px] bg-sensor border-[2px] border-charcoal p-2">
+          <article
+            key={ambiente.id}
+            className="flex flex-col gap-2 w-[600px] bg-sensor border-[2px] border-charcoal p-2 rounded-[5px]"
+          >
             {editandoId === ambiente.id ? (
-              <>
+              <form className="flex flex-col gap-2">
                 {["sig", "descricao", "ni", "responsavel"].map((field) => (
                   <input
                     key={field}
@@ -90,30 +93,33 @@ function Enviroments() {
                   />
                 ))}
 
-                <EditFormsButtons 
-                  sensorId={ambiente.id} 
-                  onSave={handleSaveEdit} 
-                  onCancel={() => setEditandoId(null)} 
+                <EditFormsButtons
+                  sensorId={ambiente.id}
+                  onSave={handleSaveEdit}
+                  onCancel={() => setEditandoId(null)}
                 />
-              </>
+              </form>
             ) : (
               <>
-                <div>
-                  <p className="text-[20px] font-bold capitalize">{ambiente.sig} - {ambiente.descricao}</p>
+                <header>
+                  <h2 className="text-[20px] font-bold capitalize">
+                    {ambiente.sig} - {ambiente.descricao}
+                  </h2>
                   <p className="text-[20px] text-charcoal font-bold capitalize">
                     Responsável: {ambiente.responsavel} - {ambiente.ni}
                   </p>
-                </div>
-                <div className="flex gap-2">
+                </header>
+
+                <footer className="flex gap-2">
                   <UpdateButton onEdit={() => handleEditClick(ambiente)} />
                   <DeleteButton onDelete={handleDelete} id={ambiente.id} />
-                </div>
+                </footer>
               </>
             )}
-          </div>
+          </article>
         ))}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
 
