@@ -65,7 +65,7 @@ function Aside() {
         </div>
       </nav>
 
-      <img className="pt-30" src={LogoWhite} alt="Logo da empresa" />
+      <img className="pt-25" src={LogoWhite} alt="Logo da empresa" />
     </aside>
   );
 }

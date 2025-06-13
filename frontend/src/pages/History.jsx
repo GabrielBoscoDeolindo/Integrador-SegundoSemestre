@@ -2,11 +2,21 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Aside from "../components/Aside";
 import DeleteButton from "../components/DeleteButton";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 function History() {
   const [historico, setHistorico] = useState([]);
-  const [ordenarPor, setOrdenarPor] = useState("timestamp"); 
+  const [ordenarPor, setOrdenarPor] = useState("timestamp");
+  const [sensorId, setSensorId] = useState("");
+  const [filtroSensor, setFiltroSensor] = useState("");
 
   const fetchHistorico = async () => {
     const token = localStorage.getItem("access_token");
@@ -33,13 +43,20 @@ function History() {
     }
   };
 
- 
   const toggleOrdenacao = () => {
-    setOrdenarPor(prev => (prev === "timestamp" ? "valor" : "timestamp"));
+    setOrdenarPor((prev) => (prev === "timestamp" ? "valor" : "timestamp"));
   };
 
- 
-  const chartData = [...historico]
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setFiltroSensor(sensorId.trim());
+  };
+
+  const filteredHistorico = filtroSensor
+    ? historico.filter((item) => item.sensor.toString() === filtroSensor)
+    : historico;
+
+  const chartData = [...filteredHistorico]
     .sort((a, b) => {
       if (ordenarPor === "timestamp") {
         return new Date(a.timestamp) - new Date(b.timestamp);
@@ -47,9 +64,9 @@ function History() {
         return a.valor - b.valor;
       }
     })
-    .map(item => ({
+    .map((item) => ({
       timestamp: new Date(item.timestamp).toLocaleString(),
-      valor: item.valor
+      valor: item.valor,
     }));
 
   return (
@@ -59,16 +76,39 @@ function History() {
       <div className="flex flex-col p-6 pt-16 gap-4">
         <p className="text-charcoal text-[36px] font-semibold">Histórico:</p>
 
-        <button onClick={toggleOrdenacao} className="mb-4 py-2 bg-blue-600 font-semibold text-white rounded hover:bg-blue-700">
-          Ordenar por: {ordenarPor === "timestamp" ? "Hora do resgistro" : "Valor"}
+        <form onSubmit={handleSearch} className="flex gap-2">
+          <input
+            type="text"
+            placeholder="Digite o ID do sensor"
+            value={sensorId}
+            onChange={(e) => setSensorId(e.target.value)}
+            className="border p-2 rounded-[5px]"
+            aria-label="ID do sensor"
+          />
+          <button
+            type="submit"
+            className="bg-blue-600 text-white font-semibold rounded-[5px] p-2 hover:bg-blue-700"
+          >
+            BUSCAR
+          </button>
+        </form>
+
+        <button
+          onClick={toggleOrdenacao}
+          className="mb-4 py-2 bg-blue-600 font-semibold text-white rounded hover:bg-blue-700"
+        >
+          Ordenar por:{" "}
+          {ordenarPor === "timestamp" ? "Hora do registro" : "Valor"}
         </button>
 
-        {historico.map((item) => (
-          <div key={item.id} className="flex flex-col gap-2 w-[300px] bg-sensor border-[2px] border-charcoal p-2 rounded-[5px]">
+        {filteredHistorico.map((item) => (
+          <div
+            key={item.id}
+            className="flex flex-col gap-2 w-[300px] bg-sensor border-[2px] border-charcoal p-2 rounded-[5px]"
+          >
             <div>
-              <p className="text-[18px] font-bold">
-                Valor: {item.valor}
-              </p>
+              <p className="text-[18px] font-bold">Valor: {item.valor}</p>
+              <p className="text-[16px]">ID sensor: {item.sensor}</p>
               <p className="text-[16px]">
                 Timestamp: {new Date(item.timestamp).toLocaleString()}
               </p>
@@ -85,8 +125,8 @@ function History() {
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="timestamp"/>
-            <YAxis dataKey="valor"/>
+            <XAxis dataKey="timestamp" />
+            <YAxis dataKey="valor" />
             <Tooltip />
             <Line type="monotone" dataKey="valor" stroke="#3E4756" />
           </LineChart>
