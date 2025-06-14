@@ -80,7 +80,7 @@ function Login() {
           </form>
 
           <footer>
-            <Link to="/" className="text-charcoal underline text-[20px]">
+            <Link to="/cadastro" className="text-charcoal underline text-[20px]">
               Não possui uma conta? Se cadastre aqui!
             </Link>
           </footer>

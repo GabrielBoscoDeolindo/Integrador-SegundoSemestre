@@ -10,8 +10,8 @@ import Map from './pages/Map';
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Cadastro />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Login />} />
+      <Route path="/cadastro" element={<Cadastro />} />
       <Route path="/sensores" element={<Sensors />} />
       <Route path="/ambientes" element={<Enviroments />} />
       <Route path="/historico" element={<History />} />

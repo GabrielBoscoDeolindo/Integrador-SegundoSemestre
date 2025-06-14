@@ -75,7 +75,7 @@ function Register() {
           </form>
 
           <footer>
-            <Link to="/login" className="text-charcoal underline text-[20px]">
+            <Link to="/" className="text-charcoal underline text-[20px]">
               Já possui uma conta? Entre aqui
             </Link>
           </footer>

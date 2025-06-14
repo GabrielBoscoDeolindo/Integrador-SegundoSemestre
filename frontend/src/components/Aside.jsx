@@ -30,7 +30,7 @@ function Aside() {
       >
         <Link
           to="/login"
-          className="flex text-white items-center gap-1 font-semibold hover:text-black"
+          className="flex text-white items-center gap-1 font-semibold hover:text-[#B0BEC5]"
         >
           <FaArrowLeft aria-hidden="true" />
           <span>SAIR</span>
