@@ -5,6 +5,7 @@ import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import Leaf from "leaflet";
 
+// Configurações doLeaf
 delete Leaf.Icon.Default.prototype._getIconUrl;
 Leaf.Icon.Default.mergeOptions({
   iconRetinaUrl:
@@ -16,8 +17,8 @@ Leaf.Icon.Default.mergeOptions({
 function ChangeMapView({ coords }) {
   const map = useMap();
   useEffect(() => {
-    if (coords) {
-      map.setView(coords);
+    if (coords && coords.length === 2) {
+      map.setView(coords, map.getZoom());
     }
   }, [coords, map]);
   return null;
@@ -26,83 +27,107 @@ function ChangeMapView({ coords }) {
 function Map() {
   const [sensorId, setSensorId] = useState("");
   const [sensor, setSensor] = useState(null);
+  const [error, setError] = useState("");
 
   const handleSearch = async () => {
+    setError("");
+    setSensor(null);
     try {
       const token = localStorage.getItem("access_token");
       const { data } = await axios.get(
-        `http://localhost:8000/sensores/${sensorId}/`,
+        `http://localhost:8000/sensores/${sensorId.trim()}/`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
       setSensor(data);
     } catch (err) {
-      alert("Sensor não encontrado ou erro de permissão.");
+      setError("Sensor não encontrado ou erro de permissão. Verifique o ID.");
       setSensor(null);
     }
   };
 
   return (
-    <div className="flex">
+    <div className="flex min-h-screen bg-background">
       <Aside />
 
-      <main className="flex flex-col p-6 pt-16 gap-4">
-        <h1 className="text-charcoal text-[36px] font-semibold">
-          Buscar sensor por ID
-        </h1>
+      <main className="flex-1 p-8 pt-12 flex flex-col gap-8">
+        <h1 className="text-charcoal text-4xl font-bold">Localizar Sensor</h1>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSearch();
-          }}
-          className="flex gap-2"
-        >
-          <input
-            type="text"
-            placeholder="Digite o ID do sensor"
-            value={sensorId}
-            onChange={(e) => setSensorId(e.target.value)}
-            className="border p-2 rounded-[5px]"
-            aria-label="ID do sensor"
-          />
-          <button
-            type="submit"
-            className="bg-blue-600 text-white font-semibold rounded-[5px] p-2 hover:bg-blue-700"
+        {/* Seção de Busca */}
+        <section className="bg-white rounded-[5px] p-6 border border-black">
+          <h2 className="text-xl font-semibold text-charcoal mb-4">
+            Buscar sensor por ID
+          </h2>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSearch();
+            }}
+            className="flex flex-col sm:flex-row gap-4"
           >
-            BUSCAR
-          </button>
-        </form>
+            <input
+              type="text"
+              placeholder="Digite o ID do sensor"
+              value={sensorId}
+              onChange={(e) => {
+                setSensorId(e.target.value);
+                setError("");
+              }}
+              className="flex-1 border border-gray-300 p-2 rounded-[5px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-label="ID do sensor"
+            />
+            <button
+              type="submit"
+              className="bg-blue-600 text-white font-semibold rounded-[5px] py-2 px-6 hover:bg-blue-700 transition duration-300"
+            >
+              BUSCAR
+            </button>
+          </form>
+          {error && <p className="text-red-600 mt-4 text-sm">{error}</p>}
+        </section>
 
+        {/* Seção de Informações do Sensor e Mapa */}
         {sensor && (
-          <section className="flex gap-20">
-            <article className="flex flex-col gap-2 w-[350px] h-[120px] bg-sensor border-[2px] border-charcoal p-2 rounded-[5px]">
-              <h2 className="text-[20px] font-bold capitalize">
+          <section className="flex flex-col lg:flex-row gap-8">
+            {/* Cartão de Informações do Sensor */}
+            <article className="bg-white rounded-[5px] p-6 border border-black w-full lg:w-1/3 flex flex-col gap-4 h-fit">
+              <h2 className="text-2xl font-semibold text-charcoal capitalize">
                 {sensor.id} - {sensor.sensor}
               </h2>
-              <p className="text-[12px] font-bold">
-                Mac address: {sensor.mac_address}
+              <p className="text-base text-gray-700">
+                <span className="font-medium">MAC Address: </span>
+                {sensor.mac_address}
               </p>
-              <p className="text-[18px] font-bold">
-                Coordenadas: {sensor.latitude}, {sensor.longitude}
+              <p className="text-base text-gray-700">
+                <span className="font-medium">Coordenadas: </span>
+                {sensor.latitude}, {sensor.longitude}
+              </p>
+              <p
+                className={`text-xl font-bold ${
+                  sensor.status ? "text-blue-500" : "text-red-500"
+                }`}
+              >
+                {sensor.status ? "ATIVO" : "INATIVO"}
               </p>
             </article>
 
-            <figure className="border-4 rounded-[5px]">
+            {/* Contêiner do Mapa */}
+            <div
+              className="w-full lg:w-2/3 bg-white rounded-[5px] border border-black overflow-hidden"
+              style={{ height: "600px" }}
+            >
               <MapContainer
                 center={[sensor.latitude, sensor.longitude]}
                 zoom={15}
-                style={{ width: "700px", height: "700px", overflow: "hidden" }}
+                scrollWheelZoom={true}
+                className="w-full h-full"
               >
                 <ChangeMapView coords={[sensor.latitude, sensor.longitude]} />
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <Marker position={[sensor.latitude, sensor.longitude]} />
               </MapContainer>
-              <figcaption className="sr-only">
-                Mapa com a localização do sensor
-              </figcaption>
-            </figure>
+            </div>
           </section>
         )}
       </main>

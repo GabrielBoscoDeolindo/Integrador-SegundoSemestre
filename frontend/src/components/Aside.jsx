@@ -29,7 +29,7 @@ function Aside() {
         className="flex flex-col items-center gap-5"
       >
         <Link
-          to="/login"
+          to="/"
           className="flex text-white items-center gap-1 font-semibold hover:text-[#B0BEC5]"
         >
           <FaArrowLeft aria-hidden="true" />

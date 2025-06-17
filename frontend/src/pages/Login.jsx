@@ -34,7 +34,7 @@ function Login() {
     <div className="flex">
       <aside className="bg-charcoal w-[1024px] h-[1024px]"></aside>
 
-      <main className="w-full">
+      <main className="w-full bg-background">
         <header className="flex justify-end">
           <img src={Logo} alt="Logo" />
         </header>

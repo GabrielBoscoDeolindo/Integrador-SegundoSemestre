@@ -10,20 +10,24 @@ function Enviroments() {
   const [ambientes, setAmbientes] = useState([]);
   const [editandoId, setEditandoId] = useState(null);
   const [formEdicao, setFormEdicao] = useState({});
-
   const location = useLocation();
-  const query = location.search;  
+  const query = location.search;
 
   const fetchAmbientes = async () => {
+    try {
       const token = localStorage.getItem("access_token");
-      const { data } = await axios.get(`http://localhost:8000/ambientes/${query}`, {
+      const url = query ? `http://localhost:8000/ambientes/${query}` : `http://localhost:8000/ambientes/`;
+      const { data } = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAmbientes(data);
+    } catch (error) {
+      alert("Não foi possível carregar os ambientes.");
+    }
   };
 
-  useEffect(() => { 
-    fetchAmbientes(); 
+  useEffect(() => {
+    fetchAmbientes();
   }, [location.search]);
 
   const handleDelete = async (id) => {
@@ -35,27 +39,37 @@ function Enviroments() {
       });
       fetchAmbientes();
     } catch (err) {
-      alert("Erro ao deletar Ambiente. Verifique permissões.");
+      alert("Erro ao deletar ambiente. Verifique as permissões.");
     }
   };
 
   const handleEditClick = (ambiente) => {
     setEditandoId(ambiente.id);
     setFormEdicao({
-      sig: ambiente.sig,
-      descricao: ambiente.descricao,
-      ni: ambiente.ni,
-      responsavel: ambiente.responsavel,
+      sig: ambiente.sig || "", 
+      descricao: ambiente.descricao || "",
+      ni: ambiente.ni === null || ambiente.ni === undefined ? "" : ambiente.ni, 
+      responsavel: ambiente.responsavel || "",
     });
   };
 
+
   const handleEditChange = (e) => {
     const { name, value } = e.target;
-    setFormEdicao((prev) => ({ ...prev, [name]: value }));
+    let newValue = value;
+    if (name === 'ni') {
+      if (value === '') {
+        newValue = null; 
+      } else {
+        const parsedValue = Number(value);
+        newValue = isNaN(parsedValue) ? value : parsedValue;
+      }
+    }
+    setFormEdicao((prev) => ({ ...prev, [name]: newValue }));
   };
 
+
   const handleSaveEdit = async (id) => {
-    try {
       const token = localStorage.getItem("access_token");
       await axios.patch(`http://localhost:8000/ambientes/${id}/`, formEdicao, {
         headers: { Authorization: `Bearer ${token}` },
@@ -63,63 +77,77 @@ function Enviroments() {
       setEditandoId(null);
       setFormEdicao({});
       fetchAmbientes();
-    } catch (err) {
-      alert("Erro ao editar. Verifique permissões.");
-    }
   };
 
   return (
-    <main className="flex">
+    <div className="flex min-h-screen bg-background">
       <Aside />
 
-      <section className="flex flex-col p-6 pt-16 gap-4">
-        <h1 className="text-charcoal text-[36px] font-semibold">Meus ambientes:</h1>
+      <main className="flex-1 p-8 pt-12">
+        <h1 className="text-charcoal text-4xl font-bold mb-8">
+          Meus Ambientes
+        </h1>
 
-        {ambientes.map((ambiente) => (
-          <article
-            key={ambiente.id}
-            className="flex flex-col gap-2 w-[600px] bg-sensor border-[2px] border-charcoal p-2 rounded-[5px]"
-          >
-            {editandoId === ambiente.id ? (
-              <form className="flex flex-col gap-2">
-                {["sig", "descricao", "ni", "responsavel"].map((field) => (
-                  <input
-                    key={field}
-                    name={field}
-                    value={formEdicao[field]}
-                    onChange={handleEditChange}
-                    className="border p-1"
-                    placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {ambientes.map((ambiente) => (
+            <div
+              key={ambiente.id}
+
+              className="bg-white rounded-[5px] border border-black p-6 flex flex-col justify-between"
+            >
+              {editandoId === ambiente.id ? (
+ 
+                <form className="flex flex-col gap-3" onSubmit={(e) => { e.preventDefault(); handleSaveEdit(ambiente.id); }}>
+                  {[
+                    "sig",
+                    "descricao",
+                    "ni",
+                    "responsavel",
+                  ].map((field) => (
+                    <input
+                      key={field}
+                      name={field}
+                      value={formEdicao[field]}
+                      onChange={handleEditChange}
+                      className="border border-gray-300 p-2 rounded-[5px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder={field}
+                      type={field === 'ni' ? 'number' : 'text'}
+                    />
+                  ))}
+
+ 
+                  <EditFormsButtons
+                    sensorId={ambiente.id}
+                    onSave={() => handleSaveEdit(ambiente.id)} 
+                    onCancel={() => setEditandoId(null)}
                   />
-                ))}
+                </form>
+              ) : (
+                <>
+                  <div className="mb-4">
+                    <h2 className="text-2xl font-semibold text-charcoal mb-1 capitalize">
+                      {ambiente.sig} - {ambiente.descricao}
+                    </h2>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-medium">Responsável:</span>{" "}
+                      {ambiente.responsavel}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-medium">NI:</span> {ambiente.ni}
+                    </p>
+                  </div>
 
-                <EditFormsButtons
-                  sensorId={ambiente.id}
-                  onSave={handleSaveEdit}
-                  onCancel={() => setEditandoId(null)}
-                />
-              </form>
-            ) : (
-              <>
-                <header>
-                  <h2 className="text-[20px] font-bold capitalize">
-                    {ambiente.sig} - {ambiente.descricao}
-                  </h2>
-                  <p className="text-[20px] text-charcoal font-bold capitalize">
-                    Responsável: {ambiente.responsavel} - {ambiente.ni}
-                  </p>
-                </header>
-
-                <footer className="flex gap-2">
-                  <UpdateButton onEdit={() => handleEditClick(ambiente)} />
-                  <DeleteButton onDelete={handleDelete} id={ambiente.id} />
-                </footer>
-              </>
-            )}
-          </article>
-        ))}
-      </section>
-    </main>
+                  <div className="flex gap-3 justify-end mt-auto">
+                    <UpdateButton onEdit={() => handleEditClick(ambiente)} />
+                    <DeleteButton onDelete={handleDelete} id={ambiente.id} />
+                  </div>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+      </main>
+    </div>
   );
 }
 

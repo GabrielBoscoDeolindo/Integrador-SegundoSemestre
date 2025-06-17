@@ -4,7 +4,7 @@ import axios from "axios";
 import Aside from "../components/Aside";
 import DeleteButton from "../components/DeleteButton";
 import UpdateButton from "../components/UpdateButton";
-import EditFormsButtons from "../components/EditFormsButtons";
+import EditFormsButtons from "../components/EditFormsButtons"; 
 
 function Sensors() {
   const [sensores, setSensores] = useState([]);
@@ -12,19 +12,27 @@ function Sensors() {
   const [formEdicao, setFormEdicao] = useState({});
 
   const location = useLocation();
-  const query = location.search;  
+  const query = location.search;
 
   const fetchSensores = async () => {
+    try {
       const token = localStorage.getItem("access_token");
-      const { data } = await axios.get(`http://localhost:8000/sensores/${query}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const { data } = await axios.get(
+        `http://localhost:8000/sensores/${query}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setSensores(data);
+    } catch (error) {
+      console.error("Erro ao buscar sensores:", error);
+      alert("Não foi possível carregar os sensores.");
+    }
   };
 
   useEffect(() => {
     fetchSensores();
-  }, [location.search]);  
+  }, [location.search]);
 
   const handleDelete = async (id) => {
     if (!id) return;
@@ -35,7 +43,7 @@ function Sensors() {
       });
       fetchSensores();
     } catch (err) {
-      alert("Erro ao deletar sensor. Verifique permissões.");
+      alert("Erro ao deletar sensor. Verifique as permissões.");
     }
   };
 
@@ -66,58 +74,85 @@ function Sensors() {
       setFormEdicao({});
       fetchSensores();
     } catch (err) {
-      alert("Erro ao editar. Verifique permissões.");
+      alert("Erro ao editar. Verifique as permissões.");
     }
   };
 
   return (
-    <div className="flex">
+    <div className="flex min-h-screen bg-background">
       <Aside />
+      <main className="flex-1 p-8 pt-12">
+        <h1 className="text-charcoal text-4xl font-bold mb-8">Meus Sensores</h1>
 
-      <main className="flex flex-col p-6 pt-16 gap-4">
-        <p className="text-charcoal text-[36px] font-semibold">Meus sensores:</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {sensores.map((sensor) => (
+            <div key={sensor.id} className="bg-white rounded-[5px] border border-black p-6 flex flex-col justify-between">
+              {editandoId === sensor.id ? (
+                <div className="flex flex-col gap-3">
+                  {[
+                    "sensor",
+                    "mac_address",
+                    "latitude",
+                    "longitude",
+                    "unidade_med",
+                  ].map((field) => (
+                    <input
+                      key={field}
+                      name={field}
+                      value={formEdicao[field]}
+                      onChange={handleEditChange}
+                      className="border border-gray-300 p-2 rounded-[5px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder={field}
+                    />
+                  ))}
 
-        {sensores.map((sensor) => (
-          <div key={sensor.id} className="flex flex-col gap-2 w-[350px] bg-sensor border-[2px] border-charcoal p-2 rounded-[5px]">
-            {editandoId === sensor.id ? (
-              <>
-                {["sensor", "mac_address", "latitude", "longitude", "unidade_med"].map((field) => (
-                  <input
-                    key={field}
-                    name={field}
-                    value={formEdicao[field]}
+                  <select
+                    name="status"
+                    value={formEdicao.status}
                     onChange={handleEditChange}
-                    className="border p-1"
-                    placeholder={field}
+                    className="border border-gray-300 p-2 rounded-[5px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value={true}>ATIVO</option>
+                    <option value={false}>INATIVO</option>
+                  </select>
+
+                  <EditFormsButtons
+                    sensorId={sensor.id}
+                    onSave={handleSaveEdit}
+                    onCancel={() => setEditandoId(null)}
                   />
-                ))}
-
-                <select name="status" value={formEdicao.status} onChange={handleEditChange} className="border p-1">
-                  <option value={true}>ATIVO</option>
-                  <option value={false}>INATIVO</option>
-                </select>
-
-              <EditFormsButtons sensorId={sensor.id} onSave={handleSaveEdit} onCancel={() => setEditandoId(null)}/>
-            </>
-            ) : (
-              <>
-                <section>
-                  <p className="text-[20px] font-bold capitalize">{sensor.id} - {sensor.sensor}</p>
-                  <p className={`text-[16px] font-semibold ${sensor.status ? "text-[#486bf5]" : "text-[#ff4040]"}`}>
-                    {sensor.status ? "ATIVO" : "INATIVO"}
-                  </p>
-                  <p className="text-[12px] font-bold">Mac address: {sensor.mac_address}</p>
-                  <p className="text-[12px] font-bold">Unidade de Medida: {sensor.unidade_med}</p>
-                  <p className="text-[12px] font-bold">Coordenadas: {sensor.latitude}, {sensor.longitude}</p>
-                </section>
-                <section className="flex gap-2">
-                  <UpdateButton onEdit={() => handleEditClick(sensor)} />
-                  <DeleteButton onDelete={handleDelete} id={sensor.id} />
-                </section>
-              </>
-            )}
-          </div>
-        ))}
+                </div>
+              ) : (
+                <>
+                  <div className="mb-4">
+                    <h2 className="text-2xl font-semibold text-charcoal mb-1 capitalize">
+                      {sensor.id} - {sensor.sensor}
+                    </h2>
+                    <p className={`text-xl font-bold ${sensor.status ? "text-blue-500" : "text-red-500"}`}>
+                      {sensor.status ? "ATIVO" : "INATIVO"}
+                    </p>
+                    <p className="text-sm text-gray-600 mt-2">
+                      <span className="font-medium">MAC Address:</span>{" "}
+                      {sensor.mac_address}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-medium">Unidade de Medida:</span>{" "}
+                      {sensor.unidade_med}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-medium">Coordenadas:</span>{" "}
+                      {sensor.latitude}, {sensor.longitude}
+                    </p>
+                  </div>
+                  <div className="flex gap-3 justify-end mt-auto">
+                    <UpdateButton onEdit={() => handleEditClick(sensor)} />
+                    <DeleteButton onDelete={handleDelete} id={sensor.id} />
+                  </div>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
       </main>
     </div>
   );
