@@ -49,7 +49,7 @@ function Register() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="border border-black rounded-[5px] px-4 py-3 bg-[#E8E8E8] w-[491px]"
+              className="border border-black rounded-[5px] px-4 py-3 bg-white w-[491px]"
             />
 
             <label className="text-charcoal font-semibold text-[20px]">
@@ -61,7 +61,7 @@ function Register() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="border border-black rounded-[5px] px-4 py-3 bg-[#E8E8E8] w-[491px]"
+              className="border border-black rounded-[5px] px-4 py-3 bg-white w-[491px]"
             />
 
             <div className="flex justify-center">

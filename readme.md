@@ -52,22 +52,11 @@ Siga os passos abaixo para configurar e rodar o projeto na máquina local.
 
 1.  **Clone o repositório do seu backend:**
     ```bash
-    git clone [https://github.com/Jovens-Genios/Trilha-de-Aprendizado-Backend](https://github.com/Jovens-Genios/Trilha-de-Aprendizado-Backend)
-    cd [pasta-do-seu-backend]
+    git clone
+    cd backend
     ```
 
-2.  **Crie e ative um ambiente virtual:**
-    É uma boa prática usar ambientes virtuais para isolar as dependências do projeto.
-    ```bash
-    python -m venv venv
-    # No Windows:
-    .\venv\Scripts\activate
-    # No macOS/Linux:
-    source venv/bin/activate
-    ```
-
-3.  **Crie o arquivo de variáveis de ambiente (`.env`):**
-    Na raiz do seu diretório do backend, crie um arquivo chamado `.env`.
+2.  **Crie o ambiente virtual (`.env`):**
     ```bash
     py -m venv .env
     ```
@@ -76,12 +65,12 @@ Siga os passos abaixo para configurar e rodar o projeto na máquina local.
     .env\scripts\activate
     ```
 
-4.  **Instale as dependências do backend:**
+3.  **Instale as dependências do backend:**
     ```bash
     pip install -r requirements.txt
     ```
 
-5.  **Inicie o servidor de desenvolvimento do backend:**
+4.  **Inicie o servidor de desenvolvimento do backend:**
     ```bash
     python manage.py runserver
     ```
