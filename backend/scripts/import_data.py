@@ -1,12 +1,15 @@
 import os
+import sys
 import django
 import pandas as pd
-import sys
-from app.models import Sensor, Ambiente, Historico
+
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.settings")
 django.setup()
+
+
+from app.models import Sensor, Ambiente, Historico
 
 def importar_ambientes():
     df = pd.read_excel("data/ambientes.xlsx")
@@ -33,14 +36,16 @@ def importar_sensores():
 def importar_historico():
     df = pd.read_excel("data/historico.xlsx")
     for _, row in df.iterrows():
-            sensor = Sensor.objects.get(id=row["sensor"])
-            ambiente = Ambiente.objects.get(id=row["ambiente"])
-            Historico.objects.create(
-                sensor=sensor,
-                ambiente=ambiente,
-                timestamp=pd.to_datetime(row["timestamp"]),
-                valor=row["valor"]
-            )
+        sensor = Sensor.objects.get(id=row["sensor"])
+        ambiente = Ambiente.objects.get(id=row["ambiente"])
+        Historico.objects.create(
+            sensor=sensor,
+            ambiente=ambiente,
+            timestamp=pd.to_datetime(row["timestamp"]),
+            valor=row["valor"]
+        )
 
 if __name__ == "__main__":
+    importar_ambientes()
+    importar_sensores()
     importar_historico()

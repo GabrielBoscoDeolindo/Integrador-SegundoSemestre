@@ -10,18 +10,28 @@ function Enviroments() {
   const [ambientes, setAmbientes] = useState([]);
   const [editandoId, setEditandoId] = useState(null);
   const [formEdicao, setFormEdicao] = useState({});
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [newAmbienteForm, setNewAmbienteForm] = useState({
+    sig: "",
+    descricao: "",
+    ni: "",
+    responsavel: "",
+  });
+
   const location = useLocation();
   const query = location.search;
 
   const fetchAmbientes = async () => {
     try {
       const token = localStorage.getItem("access_token");
-      const url = query ? `http://localhost:8000/ambientes/${query}` : `http://localhost:8000/ambientes/`;
+      const url = query
+        ? `http://localhost:8000/ambientes/${query}`
+        : `http://localhost:8000/ambientes/`;
       const { data } = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAmbientes(data);
-    } catch (error) {
+    } catch {
       alert("Não foi possível carregar os ambientes.");
     }
   };
@@ -38,45 +48,64 @@ function Enviroments() {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchAmbientes();
-    } catch (err) {
-      alert("Erro ao deletar ambiente. Verifique as permissões.");
+    } catch {
+      alert("Erro ao deletar ambiente. Verifique se está logado.");
     }
   };
 
   const handleEditClick = (ambiente) => {
     setEditandoId(ambiente.id);
     setFormEdicao({
-      sig: ambiente.sig || "", 
+      sig: ambiente.sig || "",
       descricao: ambiente.descricao || "",
-      ni: ambiente.ni === null || ambiente.ni === undefined ? "" : ambiente.ni, 
+      ni: ambiente.ni === null || ambiente.ni === undefined ? "" : ambiente.ni,
       responsavel: ambiente.responsavel || "",
     });
   };
 
-
   const handleEditChange = (e) => {
     const { name, value } = e.target;
-    let newValue = value;
-    if (name === 'ni') {
-      if (value === '') {
-        newValue = null; 
-      } else {
-        const parsedValue = Number(value);
-        newValue = isNaN(parsedValue) ? value : parsedValue;
-      }
-    }
-    setFormEdicao((prev) => ({ ...prev, [name]: newValue }));
+    setFormEdicao((prev) => ({
+      ...prev,
+      [name]: name === "ni" ? (value === "" ? null : Number(value)) : value,
+    }));
   };
 
-
   const handleSaveEdit = async (id) => {
+    const token = localStorage.getItem("access_token");
+    await axios.patch(`http://localhost:8000/ambientes/${id}/`, formEdicao, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setEditandoId(null);
+    setFormEdicao({});
+    fetchAmbientes();
+  };
+
+  const handleNewAmbienteChange = (e) => {
+    const { name, value } = e.target;
+    setNewAmbienteForm((prev) => ({
+      ...prev,
+      [name]: name === "ni" ? (value === "" ? null : Number(value)) : value,
+    }));
+  };
+
+  const handleCreateAmbiente = async () => {
+    try {
       const token = localStorage.getItem("access_token");
-      await axios.patch(`http://localhost:8000/ambientes/${id}/`, formEdicao, {
+      await axios.post(`http://localhost:8000/ambientes/`, newAmbienteForm, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setEditandoId(null);
-      setFormEdicao({});
+      alert("Ambiente criado");
+      setNewAmbienteForm({
+        sig: "",
+        descricao: "",
+        ni: "",
+        responsavel: "",
+      });
       fetchAmbientes();
+    } catch {
+      alert("Erro ao criar ambiente. Verifique os campos (ou se está logado)");
+    }
   };
 
   return (
@@ -84,26 +113,84 @@ function Enviroments() {
       <Aside />
 
       <main className="flex-1 p-8 pt-12">
-        <h1 className="text-charcoal text-4xl font-bold mb-8">
-          Meus Ambientes
-        </h1>
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-charcoal text-4xl font-bold">Meus Ambientes</h1>
+          <button
+            onClick={() => setShowCreateForm(!showCreateForm)}
+            className="bg-blue-600 text-white font-semibold rounded-[5px] py-2 px-4 hover:bg-blue-700 cursor-pointer"
+          >
+            Criar Ambiente
+          </button>
+        </div>
+
+        {showCreateForm && (
+          <div className="bg-white rounded-[5px] border border-black p-6 mb-8 shadow-md">
+            <h2 className="text-2xl font-semibold text-charcoal mb-4">
+              Novo Ambiente
+            </h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleCreateAmbiente();
+              }}
+              className="flex flex-col gap-3"
+            >
+              {[
+                { name: "sig", placeholder: "Sigla", type: "text" },
+                { name: "descricao", placeholder: "Descrição", type: "text" },
+                { name: "ni", placeholder: "NI", type: "number" },
+                {
+                  name: "responsavel",
+                  placeholder: "Responsável",
+                  type: "text",
+                },
+              ].map((field) => (
+                <input
+                  key={field.name}
+                  name={field.name}
+                  value={newAmbienteForm[field.name]}
+                  onChange={handleNewAmbienteChange}
+                  type={field.type}
+                  className="border border-gray-300 p-2 rounded-[5px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder={field.placeholder}
+                  required
+                />
+              ))}
+
+              <div className="flex gap-3 justify-end mt-4">
+                <button
+                  type="submit"
+                  className="bg-blue-600 text-white font-semibold rounded-[5px] py-2 px-4 hover:bg-blue-700 cursor-pointer"
+                >
+                  SALVAR NOVO AMBIENTE
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowCreateForm(false)}
+                  className="bg-red-600 text-white font-semibold rounded-[5px] py-2 px-4 hover:bg-red-700 cursor-pointer"
+                >
+                  CANCELAR
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {ambientes.map((ambiente) => (
             <div
               key={ambiente.id}
-
               className="bg-white rounded-[5px] border border-black p-6 flex flex-col justify-between"
             >
               {editandoId === ambiente.id ? (
- 
-                <form className="flex flex-col gap-3" onSubmit={(e) => { e.preventDefault(); handleSaveEdit(ambiente.id); }}>
-                  {[
-                    "sig",
-                    "descricao",
-                    "ni",
-                    "responsavel",
-                  ].map((field) => (
+                <form
+                  className="flex flex-col gap-3"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSaveEdit(ambiente.id);
+                  }}
+                >
+                  {["sig", "descricao", "ni", "responsavel"].map((field) => (
                     <input
                       key={field}
                       name={field}
@@ -111,14 +198,13 @@ function Enviroments() {
                       onChange={handleEditChange}
                       className="border border-gray-300 p-2 rounded-[5px] focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder={field}
-                      type={field === 'ni' ? 'number' : 'text'}
+                      type={field === "ni" ? "number" : "text"}
                     />
                   ))}
 
- 
                   <EditFormsButtons
                     sensorId={ambiente.id}
-                    onSave={() => handleSaveEdit(ambiente.id)} 
+                    onSave={() => handleSaveEdit(ambiente.id)}
                     onCancel={() => setEditandoId(null)}
                   />
                 </form>

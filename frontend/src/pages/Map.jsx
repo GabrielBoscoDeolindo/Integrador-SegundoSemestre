@@ -87,10 +87,9 @@ function Map() {
           {error && <p className="text-red-600 mt-4 text-sm">{error}</p>}
         </section>
 
-        {/* Seção de Informações do Sensor e Mapa */}
+        
         {sensor && (
           <section className="flex flex-col lg:flex-row gap-8">
-            {/* Cartão de Informações do Sensor */}
             <article className="bg-white rounded-[5px] p-6 border border-black w-full lg:w-1/3 flex flex-col gap-4 h-fit">
               <h2 className="text-2xl font-semibold text-charcoal capitalize">
                 {sensor.id} - {sensor.sensor}
@@ -112,7 +111,7 @@ function Map() {
               </p>
             </article>
 
-            {/* Contêiner do Mapa */}
+            
             <div
               className="w-full lg:w-2/3 bg-white rounded-[5px] border border-black overflow-hidden"
               style={{ height: "600px" }}
