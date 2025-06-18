@@ -1,4 +1,6 @@
 # SmartCity
+Usuário: Gabriel
+Matrícula: 24240156
 
 ## Descrição do Projeto
 
