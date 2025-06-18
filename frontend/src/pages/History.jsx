@@ -19,11 +19,11 @@ function History() {
   const [filtroSensor, setFiltroSensor] = useState("");
 
   const fetchHistorico = async () => {
-      const token = localStorage.getItem("access_token");
-      const { data } = await axios.get("http://localhost:8000/historico/", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setHistorico(data);
+    const token = localStorage.getItem("access_token");
+    const { data } = await axios.get("http://localhost:8000/historico/", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setHistorico(data);
   };
 
   useEffect(() => {
@@ -56,18 +56,19 @@ function History() {
     ? historico.filter((item) => item.sensor.toString() === filtroSensor)
     : historico;
 
-  const chartData = [...filteredHistorico]
-    .sort((a, b) => {
-      if (ordenarPor === "timestamp") {
-        return new Date(a.timestamp) - new Date(b.timestamp);
-      } else {
-        return a.valor - b.valor;
-      }
-    })
-    .map((item) => ({
-      timestamp: new Date(item.timestamp).toLocaleString(),
-      valor: item.valor,
-    }));
+const chartData = [...filteredHistorico]
+  .sort((a, b) => {
+    if (ordenarPor === "timestamp") {
+      return new Date(a.timestamp) - new Date(b.timestamp);
+    } else {
+      return a.valor - b.valor;
+    }
+  })
+  .map((item) => ({
+    timestamp: item.timestamp, 
+    valor: item.valor,
+  }));
+
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -112,59 +113,55 @@ function History() {
 
           {/* Lista de Histórico */}
           <div className="flex flex-col gap-4 overflow-y-auto pr-2">
-              {filteredHistorico.map((item) => (
-                <div
-                  key={item.id}
-                  className="bg-white rounded-[5px] border border-black p-4 flex flex-col gap-2"
-                >
-                  <p className="text-lg font-bold text-charcoal">
-                    Valor: <span className="font-normal">{item.valor}</span>
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    ID Sensor:{" "}
-                    <span className="font-medium">{item.sensor}</span>
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    Timestamp:{" "}
-                    <span className="font-medium">
-                      {new Date(item.timestamp).toLocaleString()}
-                    </span>
-                  </p>
-                  <div className="mt-2">
-                    <DeleteButton onDelete={handleDelete} id={item.id} />
-                  </div>
+            {filteredHistorico.map((item) => (
+              <div
+                key={item.id}
+                className="bg-white rounded-[5px] border border-black p-4 flex flex-col gap-2"
+              >
+                <p className="text-lg font-bold text-charcoal">
+                  Valor: <span className="font-normal">{item.valor}</span>
+                </p>
+                <p className="text-sm text-gray-600">
+                  ID Sensor: <span className="font-medium">{item.sensor}</span>
+                </p>
+                <p className="text-sm text-gray-600">
+                  Timestamp:{" "}
+                  <span className="font-medium">
+                    {new Date(item.timestamp).toLocaleString()}
+                  </span>
+                </p>
+                <div className="mt-2">
+                  <DeleteButton onDelete={handleDelete} id={item.id} />
                 </div>
-              ))}
+              </div>
+            ))}
           </div>
         </section>
 
         {/* Seção do Gráfico */}
-        <section className="w-full h-[500px] bg-white rounded-[5px] p-6 border border-black flex flex-col items-center justify-center mt-16">
+        <section className="w-[1000px] h-[700px] bg-white rounded-[5px] p-6 border border-black flex flex-col items-center justify-center mt-16">
           <h2 className="text-xl font-semibold text-charcoal mb-4">
             Visualização Gráfica
           </h2>
 
-            <ResponsiveContainer width="100%" height={400}>
-              <LineChart
-                data={chartData}
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-                <XAxis
-                  dataKey="timestamp"
-                  stroke="#363F4A"
-                  tickFormatter={(tick) => new Date(tick).toLocaleTimeString()}
-                />
-                <YAxis stroke="#363F4A" />
-                <Tooltip />
-                <Line
-                  type="monotone"
-                  dataKey="valor"
-                  stroke="#36578E"
-                  activeDot={{ r: 8 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+          <ResponsiveContainer width="100%" height={600}>
+            <LineChart data={chartData}>
+              <CartesianGrid stroke="#e0e0e0" />
+              <XAxis
+                dataKey="timestamp"
+                stroke="#363F4A"
+                tickFormatter={(tick) => new Date(tick).toLocaleTimeString()}
+              />
+              <YAxis stroke="#363F4A" />
+              <Tooltip />
+              <Line
+                type="monotone"
+                dataKey="valor"
+                stroke="#36578E"
+                activeDot={{ r: 8 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
         </section>
       </main>
     </div>

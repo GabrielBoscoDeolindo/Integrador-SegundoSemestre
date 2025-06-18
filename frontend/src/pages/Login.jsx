@@ -7,12 +7,11 @@ import axios from "axios";
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMsg("");
+
 
     try {
       const response = await axios.post("http://localhost:8000/login/", {
@@ -26,7 +25,7 @@ function Login() {
       localStorage.setItem("refresh_token", refresh);
       navigate("/sensores");
     } catch (err) {
-      window.alert("DADOS INVALIDOS");
+      window.alert("Usuário ou Matrícula incorretos.");
     }
   };
 
